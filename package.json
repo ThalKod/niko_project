@@ -1,0 +1,9 @@
+{
+  "name": "niko_project",
+  "version": "1.0.0",
+  "description": "Niko is a deflationnary token coupled with a staking features",
+  "main": "index.js",
+  "repository": "https://github.com/ThalKod/niko_project",
+  "author": "Thal Marcelin",
+  "license": "MIT"
+}
