@@ -12,9 +12,9 @@ import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 contract StakingRewards {
     using SafeMath for uint256;
 
-    IERC20 _token;
-    address[] internal _stakeholders;
-    mapping(address => uint256) internal _stakes;
+    IERC20 token;
+    address[] internal stakeHolders;
+    mapping(address => uint256) internal stakes;
 
     /**
      * @dev initializes a new Staking Rewards instance
@@ -22,17 +22,17 @@ contract StakingRewards {
      * @param initialSupply     initial supply of NKO
      */
     constructor(IERC20 token) public {
-        _token = token;
+        token = token;
     }
 
     /**
     * @dev retrieve the stake for a stakeholder.
     *
-    * @param _stakeholder The stakeholder to retrieve the stake for.
+    * @param stakeholder The stakeholder to retrieve the stake for.
     * @return uint256 the amount of Niko staked.
     */
-    function getStakes(address _stakeHolder) public view returns(uint256) {
-        return _stakes[_stakeHolder];
+    function getStakes(address stakeHolder) public view returns(uint256) {
+        return stakes[stakeHolder];
     }
 
     /**
@@ -41,8 +41,8 @@ contract StakingRewards {
     */
     function getTotalStakes() public view returns(uint256) {
         uint256 totalStakes = 0;
-        for(uint256 i; i < _stakeholders.length; i++){
-            totalStakes = totalStakes.add(_stakes[_stakeHolders[i]]);
+        for(uint256 i; i < stakeHolders.length; i++){
+            totalStakes = totalStakes.add(stakes[stakeHolders[i]]);
         }
         return totalStakes;
     }
@@ -55,8 +55,8 @@ contract StakingRewards {
     * and if yes its position in the stakeholders array.
     */
     function isStakeHolder(address _address) public view returns(bool, uint256) {
-        for(uint256 i = 0; i < stakeholders.length; i++){
-            if(_address == stakeholders[i]) return (true, i);
+        for(uint256 i = 0; i < stakeHolders.length; i++){
+            if(_address == stakeHolders[i]) return (true, i);
         }
         return (false, 0);
     }
@@ -67,7 +67,7 @@ contract StakingRewards {
     */
     function addStakeHolder(address _stakeHolder) public {
         (bool isStakeHolder) = isStakeHolder(_stakeHolder);
-        if(!isStakeHolder) _stakeholders.push(_stakeHolder);
+        if(!isStakeHolder) stakeHolders.push(_stakeHolder);
     }
 
     /**
@@ -77,8 +77,8 @@ contract StakingRewards {
     function removeStakeHolder(address _stakeHolder) public {
         (bool isStakeHolder, uint256 i) = isStakeHolder(_stakeHolder);
         if(isStakeHolder){
-            _stakeHolders[s] = _stakeHolders[_stakeholders.length - 1];
-            _stakeholders.pop();
+            stakeHolders[s] = stakeHolders[stakeHolders.length - 1];
+            stakeHolders.pop();
         }
     }
 
