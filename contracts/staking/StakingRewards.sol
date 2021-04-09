@@ -19,16 +19,16 @@ contract StakingRewards {
     /**
      * @dev initializes a new Staking Rewards instance
      *
-     * @param initialSupply     initial supply of NKO
+     * @param _tokenAddress     initial supply of NKO
      */
-    constructor(IERC20 token) public {
-        token = token;
+    constructor(address _tokenAddress){
+        token = ERC20(_tokenAddress);
     }
 
     /**
     * @dev retrieve the stake for a stakeholder.
     *
-    * @param stakeholder The stakeholder to retrieve the stake for.
+    * @param stakeHolder The stakeholder to retrieve the stake for.
     * @return uint256 the amount of Niko staked.
     */
     function getStakes(address stakeHolder) public view returns(uint256) {
@@ -48,6 +48,17 @@ contract StakingRewards {
     }
 
     /**
+    * @dev a method for a stakeholder to create a stake.
+    * @param _stake The size of the stake to be created.
+    */
+    function createStake(uint256 _stake) public {
+        require(token.transferFrom(msg.sender, address(this), _stake));
+
+        if(stakes[msg.sender] == 0) addStakeHolder(msg.sender);
+        stakes[msg.sender] = stakes[msg.sender].add(_stake);
+    }
+
+    /**
     * @notice function to check if an address is already a stakeholder
     *
     * @param _address    the address to verify.
@@ -63,21 +74,21 @@ contract StakingRewards {
 
     /**
     * @notice  to add a stakeholder.
-    * @param _stakeholder The stakeholder to add.
+    * @param _stakeHolder The stakeholder to add.
     */
     function addStakeHolder(address _stakeHolder) public {
-        (bool isStakeHolder) = isStakeHolder(_stakeHolder);
-        if(!isStakeHolder) stakeHolders.push(_stakeHolder);
+        (bool isStaking,) = isStakeHolder(_stakeHolder);
+        if(!isStaking) stakeHolders.push(_stakeHolder);
     }
 
     /**
     * @notice to remove a stakeholder.
-    * @param _stakeholder the stakeholder to remove.
+    * @param _stakeHolder the stakeholder to remove.
     */
     function removeStakeHolder(address _stakeHolder) public {
-        (bool isStakeHolder, uint256 i) = isStakeHolder(_stakeHolder);
-        if(isStakeHolder){
-            stakeHolders[s] = stakeHolders[stakeHolders.length - 1];
+        (bool isStaking, uint256 i) = isStakeHolder(_stakeHolder);
+        if(isStaking){
+            stakeHolders[i] = stakeHolders[stakeHolders.length - 1];
             stakeHolders.pop();
         }
     }
