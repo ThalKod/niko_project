@@ -56,7 +56,7 @@ contract Niko is ERC20, Ownable {
     function _transfer(address _sender, address _recipient, uint256 _amount) internal override {
         require(balanceOf(_sender) >= _amount);
 
-        uint256 burnAmount = _deductionAmount(_amount);
+        uint256 burnAmount = _deductionAmount(_amount, _recipient);
         uint256 amountMinusBurn = _amount.sub(burnAmount);
 
         if(burnAmount > 0){
@@ -82,11 +82,11 @@ contract Niko is ERC20, Ownable {
      *
      * @param _amount   total amount to calcuate with
      */
-    function _deductionAmount(uint256 _amount) internal view returns (uint256) {
+    function _deductionAmount(uint256 _amount, address _recipient) internal view returns (uint256) {
         uint256 deduction = 0;
         uint256 minSupply = 50000 * 10 ** (18);
 
-        if(totalSupply() > minSupply && msg.sender != address(0)){
+        if(totalSupply() > minSupply && msg.sender != address(0) && msg.sender != stakingRewards && _recipient != stakingRewards){
             deduction = _amount.mul(burnRate).div(100);
         }
 
