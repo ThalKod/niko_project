@@ -7,4 +7,6 @@ module.exports = async function(deployer){
 
   const nikoInstance = await Niko.deployed();
   await nikoInstance.setStakingRewardsAddress(StakingRewards.address);
+
+  nikoInstance.transfer(StakingRewards.address, "500000000000000000000000");
 };

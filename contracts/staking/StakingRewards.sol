@@ -134,7 +134,7 @@ contract StakingRewards is Ownable {
     function calculateRewards(address _stakeHolder) internal view returns(uint256) {
         uint256 totalStakes = getTotalStakes();
         uint256 totalRewards = token.balanceOf(address(this)).sub(totalStakes);
-        uint256 totalAvailableRewards = totalRewards.sub(getTotalOwedRewards());
+        uint256 totalAvailableRewards = totalRewards.sub(getTotalOwedRewards()).mul(5).div(100); // Distribute 5% of total rewards per calls...
 
         uint256 stakedAmount = stakes[_stakeHolder];
         uint256 holderStakedPercentage = stakedAmount.mul(100).div(totalStakes);
