@@ -25,7 +25,6 @@ Niko is built with
 
 ### Prerequisites
 
-This is an example of how to list things you need to use the software and how to install them.
 * Truffle Suite
   ```sh
   npm install truffle -g
