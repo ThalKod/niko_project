@@ -6,6 +6,10 @@
   "repository": "https://github.com/ThalKod/niko_project",
   "author": "Thal Marcelin",
   "license": "MIT",
+  "scripts": {
+    "deploy-test": "npx truffle migrate --reset --network development",
+    "deploy-ropsten": "npx truffle migrate --reset --network ropsten"
+  },
   "dependencies": {
     "@openzeppelin/contracts": "^4.0.0",
     "@openzeppelin/test-helpers": "^0.5.10",
